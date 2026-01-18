@@ -37,7 +37,7 @@ Full demonstration of the **Atomic Replay** sequence, from target selection to f
 | **5. Atomic Replay** | **6. Buffering** |
 |:---:|:---:|
 | ![Replay A](screenshots/5_phase3_replay.png) | ![Save B](screenshots/6_save_menu.png) |
-| *Unlocking Vehicle with Signal A (Zero-Jitter)* | *Preparing Signal B for storage* |
+| *Unlocking Target with Signal A (Zero-Jitter)* | *Preparing Signal B for storage* |
 
 | **7. Success State** | **8. Verification** |
 |:---:|:---:|
