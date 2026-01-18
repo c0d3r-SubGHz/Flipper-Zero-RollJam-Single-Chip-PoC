@@ -6,7 +6,7 @@
 ![License](https://img.shields.io/badge/license-Proprietary%20Research-red)
 
 > **⚠️ EDUCATIONAL & RESEARCH PURPOSE ONLY**
-> This repository contains documentation for a Proof of Concept (PoC) demonstrating a timing vulnerability in Rolling Code implementations. This tool is intended for authorized security auditing and educational research into Sub-GHz protocols.
+This repository contains documentation for a Proof of Concept (PoC) demonstrating a timing vulnerability in Rolling Code implementations. This tool is intended for authorized security auditing and educational research into Sub-GHz protocols.
 
 ---
 
