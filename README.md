@@ -17,7 +17,7 @@ Traditionally, the **RollJam** attack (resynchronization attack) requires two si
 
 This project demonstrates that a **single CC1101 transceiver** (controlled by the Flipper Zero) can successfully perform this attack by utilizing a highly optimized **Time-Division Multiplexing (TDM)** algorithm and bypassing the RTOS scheduler latency.
 
-By implementing **Atomic Interrupts (`__disable_irq`)** during the replay phase, this tool achieves sub-microsecond transmission precision, eliminating the "OS Jitter" that typically causes modern receivers (e.g., VAG, CAME) to reject cloned signals.
+By implementing **Atomic Async Bit-Banging** technique (bypassing the standard FIFO buffers) during the replay phase, this tool achieves sub-microsecond transmission precision via direct GPIO manipulation, effectively eliminating the "OS Jitter" that typically causes modern receivers (e.g., VAG, CAME) to reject cloned signals.
 
 ---
 
@@ -53,7 +53,7 @@ Full demonstration of the **Atomic Replay** sequence, from target selection to f
 Instead of standard jamming, the app utilizes a custom **18ms (TX) / 72ms (RX)** duty cycle. This specific timing is calculated to corrupt the CRC checksum of the target receiver while maximizing the capture window for the Flipper Zero, effectively bypassing the single-chip hardware limitation.
 
 ### 2. Atomic Replay Technology
-The Flipper Zero runs on FreeRTOS, which introduces unpredictable latency during GPIO toggling. This PoC implements a critical section that disables all hardware interrupts during the signal replay phase.
+The Flipper Zero standard FIFO transmission on FreeRTOS introduces unpredictable latency during GPIO toggling. This PoC forces the CC1101 into **Asynchronous Serial Mode** (`PKTCTRL0 = 0x32`) and drives the TX pin directly via CPU Cycle-Accurate delays (`furi_hal_cortex_delay_us`) during the signal replay phase.
 *   **Result:** A laboratory-grade signal reproduction with **Zero Jitter**, indistinguishable from the original remote control.
 
 ### 3. Hardware Integrity Check
