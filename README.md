@@ -71,7 +71,7 @@ Optimized for 24 frequencies, including:
 ## ⚙️ Hardware Requirements
 
 *   **Device:** Flipper Zero
-*   **Module:** External CC1101 Module (Standard SPI connection)
+*   **Module:** External CC1101 Module (Non-standard SPI connection)
 *   **Firmware:** Tested on Unleashed / RogueMaster (Recommended for full regional unlock).
 
 **Note:** The internal radio is used for signal analysis, while the external module handles the high-power TDM jamming sequence.
