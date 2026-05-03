@@ -6,7 +6,7 @@
 ![License](https://img.shields.io/badge/license-Proprietary%20Research-red)
 
 > **⚠️ EDUCATIONAL & RESEARCH PURPOSE ONLY**
-> 
+>
 > This repository contains documentation for a Proof of Concept (PoC) demonstrating a timing vulnerability in Rolling Code implementations. This tool is intended for authorized security auditing and educational research into Sub-GHz protocols.
 
 ---
@@ -15,9 +15,11 @@
 
 Traditionally, the **RollJam** attack (resynchronization attack) requires two simultaneous radio transceivers: one to jam the receiver and another to capture the valid code.
 
-This project demonstrates that a **single CC1101 transceiver** (controlled by the Flipper Zero) can successfully perform this attack by utilizing a highly optimized **Time-Division Multiplexing (TDM)** algorithm and bypassing the RTOS scheduler latency.
+This project demonstrates that a **single external CC1101 transceiver** (controlled by the Flipper Zero), combined with the internal Sub-GHz radio for reception, can successfully perform this attack.
 
-By implementing **Atomic Async Bit-Banging** technique (bypassing the standard FIFO buffers) during the replay phase, this tool achieves sub-microsecond transmission precision via direct GPIO manipulation, effectively eliminating the "OS Jitter" that typically causes modern receivers (e.g., VAG, CAME) to reject cloned signals.
+By leveraging continuous jamming on the external module and concurrent reception on the internal radio, along with a highly optimized replay phase, this tool achieves reliable capture and retransmission of rolling codes.
+
+During replay, the implementation uses an **Atomic Async Bit-Banging** technique (bypassing standard buffered transmission) to achieve sub-microsecond timing precision via direct GPIO manipulation, effectively minimizing OS-induced jitter that can cause modern receivers (e.g., VAG, CAME) to reject signals.
 
 ---
 
@@ -28,17 +30,17 @@ Full demonstration of the **Atomic Replay** sequence, from target selection to f
 | **1. Configuration** | **2. Phase 1: Injection** |
 |:---:|:---:|
 | ![Config](screenshots/1_config.png) | ![Jamming 1](screenshots/2_phase1_jamming.png) |
-| *Target Frequency & Modulation Setup* | *TDM Jamming Active (Waiting for 1st press)* |
+| *Target Frequency & Modulation Setup* | *Continuous Jamming Active (Waiting for 1st press)* |
 
 | **3. Interception A** | **4. Phase 2: Desync** |
 |:---:|:---:|
 | ![Captured A](screenshots/3_signal_a_captured.png) | ![Jamming 2](screenshots/4_phase2_jamming.png) |
-| *First Rolling Code Cached in RAM* | *Jamming Active (Waiting for 2nd press)* |
+| *First Rolling Code Cached in RAM* | *Continuous Jamming Active (Waiting for 2nd press)* |
 
 | **5. Atomic Replay** | **6. Buffering** |
 |:---:|:---:|
 | ![Replay A](screenshots/5_phase3_replay.png) | ![Save B](screenshots/6_save_menu.png) |
-| *Unlocking Target with Signal A (Zero-Jitter)* | *Preparing Signal B for storage* |
+| *Unlocking Target with Signal A (Low-Jitter Replay)* | *Preparing Signal B for storage* |
 
 | **7. Success State** | **8. Verification** |
 |:---:|:---:|
@@ -49,15 +51,24 @@ Full demonstration of the **Atomic Replay** sequence, from target selection to f
 
 ## 🛠️ Technical Features
 
-### 1. Sniper Timing Algorithm
-Instead of standard jamming, the app utilizes a custom **18ms (TX) / 72ms (RX)** duty cycle. This specific timing is calculated to corrupt the CRC checksum of the target receiver while maximizing the capture window for the Flipper Zero, effectively bypassing the single-chip hardware limitation.
+### 1. Continuous Jamming Strategy
+Instead of time-sliced duty cycles, the app uses **continuous-wave (CW) jamming** on the external CC1101.
+
+A configurable frequency offset allows reducing self-interference while maintaining effective disruption of the target receiver.
+
+---
 
 ### 2. Atomic Replay Technology
-The Flipper Zero standard FIFO transmission on FreeRTOS introduces unpredictable latency during GPIO toggling. This PoC forces the CC1101 into **Asynchronous Serial Mode** (`PKTCTRL0 = 0x32`) and drives the TX pin directly via CPU Cycle-Accurate delays (`furi_hal_cortex_delay_us`) during the signal replay phase.
-*   **Result:** A laboratory-grade signal reproduction with **Zero Jitter**, indistinguishable from the original remote control.
+The Flipper Zero standard FIFO transmission on FreeRTOS introduces unpredictable latency during GPIO toggling. This PoC forces the CC1101 into **Asynchronous Serial Mode** (`PKTCTRL0 = 0x32`) and drives the TX pin directly via CPU cycle-accurate timing (DWT cycle counter) during the signal replay phase.
+
+*   **Result:** A highly precise signal reproduction with minimal jitter, suitable for strict rolling code receivers.
+
+---
 
 ### 3. Hardware Integrity Check
 The code implements a physical handshake (Write/Read `0x55`) with the external module before starting the attack, preventing BusFaults or Kernel Panics if the module is disconnected.
+
+---
 
 ### 4. Wide-Spectrum Support
 Optimized for 24 frequencies, including:
@@ -71,10 +82,10 @@ Optimized for 24 frequencies, including:
 ## ⚙️ Hardware Requirements
 
 *   **Device:** Flipper Zero
-*   **Module:** External CC1101 Module (Non-standard SPI connection)
+*   **Module:** External CC1101 Module (custom SPI wiring supported via software SPI)
 *   **Firmware:** Tested on Unleashed / RogueMaster (Recommended for full regional unlock).
 
-**Note:** The internal radio is used for signal analysis, while the external module handles the high-power TDM jamming sequence.
+**Note:** The internal radio is used for signal analysis (RX), while the external module handles jamming and replay transmission.
 
 ---
 
