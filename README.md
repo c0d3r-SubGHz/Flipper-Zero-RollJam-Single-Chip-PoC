@@ -49,6 +49,14 @@ Full demonstration of the **Atomic Replay** sequence, from target selection to f
 
 ---
 
+## 🎥 Live PoC Demonstration
+
+Watch the unedited Proof of Concept video demonstrating the Continuous Offset Jamming and DWT Atomic Replay in a real-world scenario.
+
+👉 **[WATCH THE VIDEO DEMONSTRATION HERE](https://t.me/RollJam_Flipper/53)**
+
+---
+
 ## 🛠️ Technical Features
 
 ### 1. Continuous Jamming Strategy
