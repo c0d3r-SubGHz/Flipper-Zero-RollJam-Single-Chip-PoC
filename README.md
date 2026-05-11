@@ -19,7 +19,7 @@ This project demonstrates that a **single external CC1101 transceiver** (control
 
 By leveraging continuous jamming on the external module and concurrent reception on the internal radio, along with a highly optimized replay phase, this tool achieves reliable capture and retransmission of rolling codes.
 
-During replay, the implementation uses an **Atomic Async Bit-Banging** technique (bypassing standard buffered transmission) to achieve sub-microsecond timing precision via direct GPIO manipulation, effectively minimizing OS-induced jitter that can cause modern receivers (e.g., VAG, CAME) to reject signals.
+During replay, the implementation uses an **Atomic Async Bit-Banging** technique (bypassing standard buffered transmission) to achieve sub-microsecond timing precision via direct GPIO manipulation, effectively minimizing OS-induced jitter that can cause modern receivers (e.g. VAG, CAME) to reject signals.
 
 ---
 
