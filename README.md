@@ -60,9 +60,9 @@ Watch the unedited Proof of Concept video demonstrating the Continuous Offset Ja
 ## 🛠️ Technical Features
 
 ### 1. Continuous Jamming Strategy
-Instead of time-sliced duty cycles, the app uses **continuous-wave (CW) jamming** on the external CC1101.
+The application implements continuous-wave (CW) jamming through the external CC1101 module rather than using duty-cycled transmission.
 
-A configurable frequency offset allows reducing self-interference while maintaining effective disruption of the target receiver.
+An adjustable frequency offset mechanism (for example ±900 kHz relative to the target carrier) is available to mitigate local RF desensitization and self-interference while preserving effective jamming performance.
 
 ---
 
