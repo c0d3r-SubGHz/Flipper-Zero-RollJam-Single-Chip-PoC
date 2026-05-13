@@ -87,13 +87,27 @@ Optimized for 24 frequencies, including:
 
 ---
 
-## ⚙️ Hardware Requirements
+## ⚙️ Hardware Requirements & Modification (CRITICAL)
 
 *   **Device:** Flipper Zero
-*   **Module:** External CC1101 Module (custom SPI wiring supported via software SPI)
-*   **Firmware:** Tested on Unleashed / RogueMaster (Recommended for full regional unlock).
+*   **Module:** External CC1101 Module (E07-M1101D / Pingequa / Generic)
+*   **Firmware:** Tested on Unleashed / RogueMaster (Recommended).
 
-**Note:** The internal radio is used for signal analysis (RX), while the external module handles jamming and replay transmission.
+### 🔧 The "Bus-Hijack" Hardware Mod
+To achieve **Continuous Offset Jamming** and bypass the Flipper's native FreeRTOS SPI bus locks, RollJam PRO relies on a custom **Bare-Metal Software SPI (Bit-Banging)** driver. 
+
+Because the Flipper OS automatically locks the default Chip Select (CS) on Pin 4 when an external module is detected, **you must reroute the CS pin** to avoid `furi_check` crashes and BusFaults.
+
+**Modification Steps:**
+1. **Cut or remove** the header for **Pin 4** on your module so it no longer connects to the Flipper.
+2. **Solder a jumper wire** connecting the CS pad on the module directly to **Pin 16 (PC0)** on the Flipper.
+
+| Schematic Diagram | Real-World Implementation |
+|:---:|:---:|
+| ![Hardware Diagram](hw_setup/1_hw_diagram.jpg) | ![Real Board](hw_setup/2_hw_photo.jpg) |
+| *Cut Pin 4 and bridge CS to Pin 16.* | *Example of the rerouted CS via jumper wire.* |
+
+*(Note: If you are using a bare CC1101 module with Dupont jumper wires instead of a PCB shield, simply route the CS wire to Pin 16 instead of Pin 4).*
 
 ---
 
