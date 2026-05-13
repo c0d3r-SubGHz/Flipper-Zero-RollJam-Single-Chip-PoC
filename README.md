@@ -30,7 +30,7 @@ Full demonstration of the **Atomic Replay** sequence, from target selection to f
 | **1. Configuration** | **2. Phase 1: Injection** |
 |:---:|:---:|
 | ![Config](screenshots/1_config.png) | ![Jamming 1](screenshots/2_phase1_jamming.png) |
-| *Target Frequency & Modulation Setup* | *Continuous Jamming Active (Waiting for 1st press)* |
+| *Target Frequency, Modulation & Jamming Offset Setup* | *Continuous Jamming Active (Waiting for 1st press)* |
 
 | **3. Interception A** | **4. Phase 2: Desync** |
 |:---:|:---:|
